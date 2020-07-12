@@ -18,6 +18,7 @@ class AppContext {
 
   static init({AppConfigure configure, AbstractServerConnection connection}) async {
     AppContext.configure = configure;
+    AppContext.connection = connection;
     final graphqlUrl = connection.resolveUrl('/graphql');
 //    logger.info('graphqlUrl is $graphqlUrl');
 
