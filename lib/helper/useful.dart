@@ -6,6 +6,7 @@ import 'dart:io';
 import 'helper.dart';
 import 'logger.dart';
 
+// TODO
 class HiveBoxes {
   static const context = 'context';
   static const connection = 'connection';
