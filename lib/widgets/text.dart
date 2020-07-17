@@ -9,8 +9,7 @@ class MySpecialTextSpanBuilder extends SpecialTextSpanBuilder {
   final bool showAtBackground;
   @override
   TextSpan build(String data, {TextStyle textStyle, SpecialTextGestureTapCallback onTap}) {
-    final TextSpan textSpan = super.build(data, textStyle: textStyle, onTap: onTap);
-    return textSpan;
+    return super.build(data, textStyle: textStyle, onTap: onTap);
   }
 
   @override
@@ -38,24 +37,19 @@ class MySpecialTextSpanBuilder extends SpecialTextSpanBuilder {
 }
 
 class AtText extends SpecialText {
-  static const String flag = "@";
+  static const String flag = '@';
   final int start;
 
   /// whether show background for @somebody
   final bool showAtBackground;
 
-  AtText(TextStyle textStyle, SpecialTextGestureTapCallback onTap, {this.showAtBackground: false, this.start})
-      : super(
-          flag,
-          " ",
-          textStyle,
-        );
+  AtText(TextStyle textStyle, SpecialTextGestureTapCallback onTap, {this.showAtBackground = false, this.start})
+      : super(flag, ' ', textStyle);
 
   @override
   InlineSpan finishText() {
-    TextStyle textStyle = this.textStyle?.copyWith(color: Colors.blue, fontSize: 16.0);
-
-    final String atText = toString();
+    final textStyle = this.textStyle?.copyWith(color: Colors.blue, fontSize: 16.0);
+    final atText = toString();
 
     return showAtBackground
         ? BackgroundTextSpan(
@@ -89,11 +83,11 @@ class EmojiText extends SpecialText {
   final int start;
   @override
   InlineSpan finishText() {
-    final String key = toString();
+    final key = toString();
 
     //fontsize id define image height
     //size = 30.0/26.0 * fontSize
-    const double size = 20.0;
+    const size = 20.0;
 
     ///fontSize 26 and text height =30.0
     //final double fontSize = 26.0;

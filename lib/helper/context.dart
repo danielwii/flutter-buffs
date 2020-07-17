@@ -21,11 +21,11 @@ class AppContext {
   static AbstractServerConnection connection;
   static List<VoidCallback> registers = [];
 
-  static addRegister(VoidCallback register) {
+  static void addRegister(VoidCallback register) {
     registers.add(register);
   }
 
-  static init({AppConfigure configure, AbstractServerConnection connection}) async {
+  static void init({AppConfigure configure, AbstractServerConnection connection}) async {
     AppContext.configure = configure;
     AppContext.connection = connection;
 //    final graphqlUrl = connection.resolveUrl('/graphql');

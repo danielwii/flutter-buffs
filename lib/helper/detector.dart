@@ -1,6 +1,6 @@
 var debugMode = false;
 
-isDebugMode() {
+bool isDebugMode() {
   assert(() {
     debugMode = true;
 

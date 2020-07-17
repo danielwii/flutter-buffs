@@ -7,7 +7,7 @@ import 'helper.dart';
 import 'logger.dart';
 
 Future<void> launchIfPossible(String url) async {
-  if (await canLaunch(url)) launch(url);
+  if (await canLaunch(url)) await launch(url);
 }
 
 class IgnoreBadCertificateHttpOverrides extends HttpOverrides {
@@ -40,7 +40,7 @@ Map<String, String> withHostHeader(String url) {
       : {HttpHeaders.hostHeader: AppContext.configure.hostname};
 }
 
-fromResponse(Response response, callback) {
+dynamic fromResponse(Response response, callback) {
   logger.fine('response status is ${response.statusCode}');
   if (RegExp(r'^20\d$').hasMatch('${response.statusCode}')) {
     logger.info('data is ${response.data}');
@@ -54,7 +54,8 @@ fromResponse(Response response, callback) {
 class EasyDialog {
   static void toast(String message) => infoToast(message);
 
-  static confirm(BuildContext context, {@required String title, String content, @required Function onConfirmed}) =>
+  static Future confirm(BuildContext context,
+          {@required String title, String content, @required Function onConfirmed}) =>
       showDialog(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -62,14 +63,14 @@ class EasyDialog {
                   content: content?.isNotEmpty == true ? Text(content) : null,
                   actions: <Widget>[
                     FlatButton(
-                        child: Text("确定"),
+                        child: Text('确定'),
                         onPressed: onConfirmed != null
                             ? () async {
                                 await onConfirmed();
                                 Navigator.pop(context);
                               }
                             : null),
-                    FlatButton(child: Text("取消"), onPressed: () => Navigator.pop(context)),
+                    FlatButton(child: Text('取消'), onPressed: () => Navigator.pop(context)),
                   ]));
 }
 
@@ -80,11 +81,11 @@ class EnumHelper {
     return item.toString().split('.')[1];
   }
 
-  static fromString<T>(List<T> enumValues, String value) {
+  static T fromString<T>(List<T> enumValues, String value) {
     if (value == null || enumValues?.isNotEmpty == true) return null;
 
     return enumValues.singleWhere((enumItem) => toName(enumItem) == value, orElse: () => null);
   }
 }
 
-enumName(item) => EnumHelper.toName(item);
+String enumName(item) => EnumHelper.toName(item);

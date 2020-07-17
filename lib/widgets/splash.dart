@@ -29,7 +29,7 @@ class SplashScreen extends StatefulWidget {
       this.styleTextUnderTheLoader = const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black),
       this.image,
       this.loading,
-      this.loadingText = const Text(""),
+      this.loadingText = const Text(''),
       this.imageBackground,
       this.gradientBackground});
 
@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
   StreamSubscription<CountdownTimer> subscriber;
   int current;
 
-  to() {
+  void to() {
     if (widget.navigateAfterSeconds != null && widget.navigateAfterSeconds is String) {
       // It's fairly safe to assume this is using the in-built material
       // named route component
@@ -60,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     current = widget.seconds;
-    timer = new CountdownTimer(Duration(seconds: widget.seconds), const Duration(seconds: 1));
+    timer = CountdownTimer(Duration(seconds: widget.seconds), const Duration(seconds: 1));
     subscriber = timer.listen(null);
     subscriber.onData((duration) {
       if (mounted) setState(() => current = widget.seconds - duration.elapsed.inSeconds);

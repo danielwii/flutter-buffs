@@ -15,7 +15,7 @@ class CachedImage extends StatelessWidget {
     return CachedNetworkImage(
         key: ValueKey(urlPath),
         httpHeaders: headers,
-        fit: this.fit,
+        fit: fit,
         filterQuality: FilterQuality.high,
         imageUrl: AppContext.connection.resolveUrl(urlPath),
         placeholder: (context, url) => Container(
@@ -27,5 +27,5 @@ class CachedImage extends StatelessWidget {
   }
 }
 
-cachedNetworkImageProvider(String path) =>
+CachedNetworkImageProvider cachedNetworkImageProvider(String path) =>
     CachedNetworkImageProvider(AppContext.connection.resolveAssets(path), headers: withHostHeader(path));
