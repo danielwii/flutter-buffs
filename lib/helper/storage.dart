@@ -12,7 +12,7 @@ class SecurityStorage {
 
   Future<void> set({@required String key, @required String value}) async {
     assert(key != null, "key must not be null");
-    logger.finer('set {key: $key, value: $value}');
+    logger.finest('set {key: $key, value: $value}');
     return _storage.write(key: key, value: value);
   }
 
@@ -23,14 +23,14 @@ class SecurityStorage {
     return value;
   }
 
-  delete({@required String key}) {
+  Future<void> delete({@required String key}) {
     assert(key != null, "key must not be null");
-    logger.finer('delete {key: $key}');
+    logger.finest('delete {key: $key}');
     return _storage.delete(key: key);
   }
 
-  clear() {
-    logger.finer('deleteAll');
+  Future<void> clear() {
+    logger.finest('deleteAll');
     return _storage.deleteAll();
   }
 }

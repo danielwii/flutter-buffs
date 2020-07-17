@@ -26,3 +26,6 @@ class CachedImage extends StatelessWidget {
         });
   }
 }
+
+cachedNetworkImageProvider(String path) =>
+    CachedNetworkImageProvider(AppContext.connection.resolveAssets(path), headers: withHostHeader(path));

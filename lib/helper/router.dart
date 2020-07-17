@@ -8,6 +8,7 @@ class Routes {
     Routes.router = router;
     router.notFoundHandler = Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       print("ROUTE WAS NOT FOUND !!! $params");
+      return const SizedBox();
     });
 //    router.define(RoutePath.home, handler: rootHandler);
 //    router.define(demoSimple, handler: demoRouteHandler);
