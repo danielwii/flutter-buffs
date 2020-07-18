@@ -67,53 +67,52 @@ class _SplashScreenState extends State<SplashScreen> {
     });
     subscriber.onDone(() {
       subscriber.cancel();
-      to();
+      if (mounted) to();
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: InkWell(
-            onTap: widget.onClick,
-            child: Stack(fit: StackFit.expand, children: <Widget>[
-              Container(
-                  decoration: BoxDecoration(
-                      image: widget.imageBackground == null
-                          ? null
-                          : DecorationImage(fit: BoxFit.fill, image: widget.imageBackground),
-                      gradient: widget.gradientBackground,
-                      color: widget.backgroundColor)),
-              Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-                Expanded(
-                    flex: 2,
-                    child: Container(
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                      CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          child: Container(child: widget.image),
-                          radius: widget.photoSize),
-                      Padding(padding: const EdgeInsets.only(top: 10.0)),
-                      widget.title
-                    ]))),
-                widget.loading == true
-                    ? Expanded(
-                        flex: 1,
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                          CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(widget.loaderColor)),
-                          Padding(padding: const EdgeInsets.only(top: 20.0)),
-                          widget.loadingText
-                        ]))
-                    : const SizedBox(),
-              ]),
-              Positioned(
-                  right: 12,
-                  top: 20,
-                  child: MaterialButton(
-                      child: Text('关闭 $current'),
-                      color: Colors.white30,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                      onPressed: to)),
-            ])));
-  }
+  Widget build(BuildContext context) => Scaffold(
+      body: SafeArea(
+          child: InkWell(
+              onTap: widget.onClick,
+              child: Stack(fit: StackFit.expand, children: <Widget>[
+                Container(
+                    decoration: BoxDecoration(
+                        image: widget.imageBackground == null
+                            ? null
+                            : DecorationImage(fit: BoxFit.fill, image: widget.imageBackground),
+                        gradient: widget.gradientBackground,
+                        color: widget.backgroundColor)),
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+                  Expanded(
+                      flex: 2,
+                      child: Container(
+                          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                        CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            child: Container(child: widget.image),
+                            radius: widget.photoSize),
+                        Padding(padding: const EdgeInsets.only(top: 10.0)),
+                        widget.title
+                      ]))),
+                  widget.loading == true
+                      ? Expanded(
+                          flex: 1,
+                          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                            CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(widget.loaderColor)),
+                            Padding(padding: const EdgeInsets.only(top: 20.0)),
+                            widget.loadingText
+                          ]))
+                      : const SizedBox(),
+                ]),
+                Positioned(
+                    right: 12,
+                    top: 20,
+                    child: MaterialButton(
+                        child: Text('关闭 $current'),
+                        color: Colors.white30,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        onPressed: to)),
+              ]))));
 }

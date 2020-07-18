@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
   event_bus: ^1.1.1
   dio: ^3.0.9
-  dio_http_cache: ^0.2.7
+  dio_http_cache: ^0.2.8
   pretty_dio_logger: ^1.1.1
   graphql_flutter: ^3.0.1
   http: ^0.12.1
@@ -25,6 +25,7 @@ dependencies:
   like_button: ^1.0.1
   cached_network_image: ^2.2.0+1
   extended_text: ^3.0.1
+  simple_animations: ^2.2.0
 
 dev_dependencies:
   flutter_test:

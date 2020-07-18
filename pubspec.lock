@@ -196,7 +196,7 @@ packages:
       name: dio_http_cache
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.7"
+    version: "0.2.8"
   event_bus:
     dependency: "direct main"
     description:
@@ -330,7 +330,7 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.1"
+    version: "0.12.2"
   http_parser:
     dependency: transitive
     description:
@@ -633,7 +633,7 @@ packages:
     source: hosted
     version: "0.1.2+7"
   simple_animations:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: simple_animations
       url: "https://pub.dartlang.org"
@@ -706,14 +706,14 @@ packages:
       name: supercharged
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.0"
+    version: "1.7.0"
   synchronized:
     dependency: transitive
     description:
       name: synchronized
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0+1"
+    version: "2.2.0+2"
   term_glyph:
     dependency: transitive
     description:
