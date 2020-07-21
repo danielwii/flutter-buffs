@@ -26,6 +26,7 @@ dependencies:
   cached_network_image: ^2.2.0+1
   extended_text: ^3.0.1
   simple_animations: ^2.2.0
+  flukit: ^1.0.2
 
 dev_dependencies:
   flutter_test:
