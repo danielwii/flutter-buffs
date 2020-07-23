@@ -21,7 +21,7 @@ class CachedImage extends StatelessWidget {
         placeholder: (context, url) => Container(
             child: Center(child: Stack(fit: StackFit.loose, children: <Widget>[const CircularProgressIndicator()]))),
         errorWidget: (context, url, error) {
-          logger.info('load image $url with headers($headers) error: $error');
+          logger.finer('load image error: $error headers:$headers');
           return const Icon(Icons.error);
         });
   }

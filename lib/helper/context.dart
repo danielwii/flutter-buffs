@@ -25,7 +25,7 @@ class AppContext {
     registers.add(register);
   }
 
-  static void init({AppConfigure configure, AbstractServerConnection connection}) async {
+  static Future<void> init({AppConfigure configure, AbstractServerConnection connection}) async {
     AppContext.configure = configure;
     AppContext.connection = connection;
 //    final graphqlUrl = connection.resolveUrl('/graphql');
