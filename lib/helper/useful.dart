@@ -35,9 +35,7 @@ Map<String, String> withHostHeader(String url) {
       ? false
       : url.contains(AppContext.connection.getResolvedIp());
   final needHost = isNull || httpStart || !ipIncluded;
-  return (needHost || AppContext.configure.hostname == null)
-      ? {}
-      : {HttpHeaders.hostHeader: AppContext.configure.hostname};
+  return (needHost || AppContext.env.hostname == null) ? {} : {HttpHeaders.hostHeader: AppContext.env.hostname};
 }
 
 dynamic fromResponse(Response response, callback) {
