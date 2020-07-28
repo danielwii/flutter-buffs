@@ -13,7 +13,10 @@ dependencies:
   event_bus: ^1.1.1
   dio: ^3.0.9
   dio_http_cache: ^0.2.8
-#  pretty_dio_logger: ^1.1.1
+  meta: ^1.1.8 # flutter_test from sdk depends on meta 1.1.8
+  json_annotation: ^3.0.1
+  quiver: ^2.1.3
+  supercharged: ^1.7.0
   graphql_flutter: ^3.1.0
   http: ^0.12.1
   awesome_dialog: ^1.1.3
@@ -22,7 +25,6 @@ dependencies:
   simple_logger: ^1.7.0
   fluttericon: ^1.0.7
   like_button: ^1.0.1
-#  argon_buttons_flutter: ^1.0.5
   cached_network_image: ^2.2.0+1
   extended_text: ^3.0.1
   simple_animations: ^2.2.0

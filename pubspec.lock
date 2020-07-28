@@ -444,7 +444,7 @@ packages:
     source: hosted
     version: "0.6.2"
   json_annotation:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: json_annotation
       url: "https://pub.dartlang.org"
@@ -479,7 +479,7 @@ packages:
     source: hosted
     version: "0.12.6"
   meta:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: meta
       url: "https://pub.dartlang.org"
@@ -633,7 +633,7 @@ packages:
     source: hosted
     version: "0.1.5"
   quiver:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: quiver
       url: "https://pub.dartlang.org"
@@ -806,7 +806,7 @@ packages:
     source: hosted
     version: "1.0.5"
   supercharged:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: supercharged
       url: "https://pub.dartlang.org"
