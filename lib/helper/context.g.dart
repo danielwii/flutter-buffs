@@ -8,11 +8,11 @@ part of 'context.dart';
 
 AppEnv _$AppEnvFromJson(Map<String, dynamic> json) {
   return AppEnv(
-    json['APP_KEY'] as String,
-    json['HOSTNAME'] as String,
-    json['PROTECTED_PROTOCOL'] as String,
-    json['PROTECTED_IP'] as String,
-    json['PROTECTED_PORT'] as int,
+    APP_KEY: json['APP_KEY'] as String,
+    HOSTNAME: json['HOSTNAME'] as String,
+    PROTECTED_PROTOCOL: json['PROTECTED_PROTOCOL'] as String,
+    PROTECTED_IP: json['PROTECTED_IP'] as String,
+    PROTECTED_PORT: json['PROTECTED_PORT'] as int,
   );
 }
 
