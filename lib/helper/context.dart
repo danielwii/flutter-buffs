@@ -26,6 +26,13 @@ class AppEnv {
         PROTECTED_IP = String.fromEnvironment('PROTECTED_IP', defaultValue: PROTECTED_IP),
         PROTECTED_PORT = int.fromEnvironment('PROTECTED_PORT', defaultValue: PROTECTED_PORT);
 
+  AppEnv.loadFromEnv()
+      : APP_KEY = String.fromEnvironment('APP_KEY'),
+        HOSTNAME = String.fromEnvironment('HOSTNAME'),
+        PROTECTED_PROTOCOL = String.fromEnvironment('PROTECTED_PROTOCOL'),
+        PROTECTED_IP = String.fromEnvironment('PROTECTED_IP'),
+        PROTECTED_PORT = int.fromEnvironment('PROTECTED_PORT');
+
   factory AppEnv.fromJson(Map<String, dynamic> json) => _$AppEnvFromJson(json);
 
   Map<String, dynamic> toJson() => _$AppEnvToJson(this);
