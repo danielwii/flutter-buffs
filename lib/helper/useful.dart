@@ -1,10 +1,27 @@
+import 'dart:io';
+
 import 'package:commons/commons.dart' hide Response;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 import 'helper.dart';
 import 'logger.dart';
+
+final _cacheManager = DefaultCacheManager();
+
+Future<File> cacheFile(String path) async {
+  if (path?.trim()?.isNotEmpty == true) {
+    final url = AppContext.connection.resolveUrl(path);
+    final fileFromCache = await _cacheManager.getFileFromCache(url);
+    if (!fileFromCache.file.existsSync()) {
+      logger.info('cache url $url');
+      return _cacheManager.getSingleFile(url);
+    }
+    return Future.value(fileFromCache.file);
+  }
+  return Future.value(null);
+}
 
 Future<void> launchIfPossible(String url) async {
   if (await canLaunch(url)) await launch(url);

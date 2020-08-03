@@ -10,3 +10,10 @@ class LoadingIndicator extends StatelessWidget {
           value: .8,
           backgroundColor: Colors.transparent));
 }
+
+class LoadingIndicator2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => AnimatedRotationBox(
+      child: GradientCircularProgressIndicator(
+          radius: 15.0, colors: [Colors.red, Colors.red], value: .7, backgroundColor: Colors.transparent));
+}
