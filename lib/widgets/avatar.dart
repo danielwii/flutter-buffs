@@ -10,10 +10,18 @@ class Avatar extends StatelessWidget {
   final Widget hint;
   final VoidCallback onTap;
   final String text;
+  final bool isFollowed;
   final Future<bool> Function(bool isFollowed) onFollowClick;
 
   const Avatar(
-      {Key key, @required this.imageUrl, this.size = 110, this.hint, this.onTap, this.text, this.onFollowClick})
+      {Key key,
+      @required this.imageUrl,
+      this.size = 110,
+      this.hint,
+      this.onTap,
+      this.text,
+      this.isFollowed,
+      this.onFollowClick})
       : super(key: key);
 
   @override
@@ -39,6 +47,7 @@ class Avatar extends StatelessWidget {
                   LikeButton(
                       size: 24,
                       onTap: onFollowClick,
+                      isLiked: isFollowed,
                       likeBuilder: (bool isLiked) =>
                           Icon(FontAwesome5.plus_circle, size: 16, color: isLiked ? Colors.red : Colors.white))
               ])),
