@@ -14,11 +14,8 @@ Future<File> cacheFile(String path) async {
   if (path?.trim()?.isNotEmpty == true) {
     final url = AppContext.connection.resolveUrl(path);
     final fileFromCache = await _cacheManager.getFileFromCache(url);
-    if (!fileFromCache.file.existsSync()) {
-      logger.info('cache url $url');
-      return _cacheManager.getSingleFile(url);
-    }
-    return Future.value(fileFromCache.file);
+    if (fileFromCache == null) logger.info('cache url $url');
+    return _cacheManager.getSingleFile(url);
   }
   return Future.value(null);
 }
@@ -104,3 +101,6 @@ class EnumHelper {
 }
 
 String enumName(item) => EnumHelper.toName(item);
+
+Widget withP<E>(E element, Widget Function(E element) builder, {Widget Function() orElse}) =>
+    element == null ? (orElse != null ? orElse() : null) : builder(element);

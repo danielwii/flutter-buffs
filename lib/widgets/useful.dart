@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Stack shadowText(String text, {TextStyle style, Color foregroundColor = Colors.black87}) => Stack(children: <Widget>[
       Text(text,
-          style: style.copyWith(
+          style: (style ?? TextStyle()).copyWith(
               foreground: Paint()
                 ..style = PaintingStyle.stroke
                 ..strokeWidth = 1

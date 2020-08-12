@@ -48,8 +48,8 @@ class Avatar extends StatelessWidget {
                       size: 24,
                       onTap: onFollowClick,
                       isLiked: isFollowed,
-                      likeBuilder: (bool isLiked) =>
-                          Icon(FontAwesome5.plus_circle, size: 16, color: isLiked ? Colors.red : Colors.white))
+                      likeBuilder: (bool isLiked) => Icon(isLiked ? FontAwesome5.heart : FontAwesome5.plus_circle,
+                          size: 16, color: isLiked ? Colors.red : Colors.white))
               ])),
       ]));
 }
