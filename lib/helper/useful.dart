@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:commons/commons.dart' hide Response;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_buffs/flutter_buffs.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 import 'helper.dart';
@@ -63,27 +64,56 @@ dynamic fromResponse(Response response, callback) {
   }
 }
 
+class LoadingAlertDialog extends StatefulWidget {
+  final Widget title;
+  final Widget content;
+
+  final VoidCallback onConfirmed;
+  final bool disableActions;
+
+  LoadingAlertDialog(this.title, this.content, {this.onConfirmed, this.disableActions});
+
+  @override
+  State<StatefulWidget> createState() => _LoadingAlertDialogState();
+}
+
+class _LoadingAlertDialogState extends State<LoadingAlertDialog> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) => isLoading
+      ? Container(
+          child: Center(child: Card(child: Padding(padding: const EdgeInsets.all(8.0), child: LoadingIndicator()))))
+      : AlertDialog(
+          title: widget.title,
+          content: widget.content,
+          actions: widget.disableActions == true
+              ? null
+              : <Widget>[
+                  FlatButton(
+                      child: Text('确定'),
+                      onPressed: () => Future.sync(() async {
+                            setState(() => isLoading = true);
+                            await widget.onConfirmed();
+                            Navigator.pop(context);
+                          }).whenComplete(() {
+                            if (mounted) setState(() => isLoading = false);
+                          })),
+                  FlatButton(child: Text('取消'), onPressed: () => Navigator.pop(context)),
+                ]);
+}
+
 class EasyDialog {
   static void toast(String message) => infoToast(message);
 
+  static Future dialog(BuildContext context, {@required Widget title, @required Widget content}) => showDialog(
+      context: context, builder: (BuildContext context) => LoadingAlertDialog(title, content, disableActions: true));
+
   static Future confirm(BuildContext context,
-          {@required String title, String content, @required Function onConfirmed}) =>
+          {@required Widget title, Widget content, @required Function onConfirmed}) =>
       showDialog(
           context: context,
-          builder: (BuildContext context) => AlertDialog(
-                  title: Text(title),
-                  content: content?.isNotEmpty == true ? Text(content) : null,
-                  actions: <Widget>[
-                    FlatButton(
-                        child: Text('确定'),
-                        onPressed: onConfirmed != null
-                            ? () async {
-                                await onConfirmed();
-                                Navigator.pop(context);
-                              }
-                            : null),
-                    FlatButton(child: Text('取消'), onPressed: () => Navigator.pop(context)),
-                  ]));
+          builder: (BuildContext context) => LoadingAlertDialog(title, content, onConfirmed: onConfirmed));
 }
 
 class EnumHelper {
