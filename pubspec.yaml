@@ -26,7 +26,7 @@ dependencies:
   simple_logger: ^1.7.0
   fluttericon: ^1.0.7
   like_button: ^1.0.1
-  cached_network_image: ^2.2.0+1
+  cached_network_image: ^2.3.0
   extended_text: ^4.0.0
   simple_animations: ^2.2.0
   flukit: ^1.0.2

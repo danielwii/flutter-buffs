@@ -132,5 +132,5 @@ class EnumHelper {
 
 String enumName(item) => EnumHelper.toName(item);
 
-Widget withP<E>(E element, Widget Function(E element) builder, {Widget Function() orElse}) =>
+dynamic withP<E>(E element, Function(E element) builder, {Function() orElse}) =>
     element == null ? (orElse != null ? orElse() : null) : builder(element);
