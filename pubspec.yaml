@@ -20,17 +20,17 @@ dependencies:
   getwidget: ^1.2.2
   graphql_flutter: ^3.1.0
   http: ^0.12.2
-  awesome_dialog: ^1.2.0
+  awesome_dialog: ^1.2.1
   commons: ^0.7.8+3
-  flutter_secure_storage: ^3.3.4
+  flutter_secure_storage: ^3.3.5
   simple_logger: ^1.7.0
   fluttericon: ^1.0.7
   like_button: ^1.0.3
-  cached_network_image: ^2.3.2+1
+  cached_network_image: ^2.3.3
   extended_text: ^4.0.0
-  simple_animations: ^2.2.2
+  simple_animations: ^2.2.3
   flukit: ^1.0.2
-  flutter_cache_manager: ^1.4.2
+  flutter_cache_manager: ^2.0.0
 
 dev_dependencies:
   flutter_test:
