@@ -15,8 +15,8 @@ dependencies:
   meta: ^1.3.0-nullsafety.3
   json_serializable: ^3.5.0
   json_annotation: ^3.1.0
-  quiver: ^2.1.4+1
-  supercharged: ^1.10.0
+  quiver: ^2.1.5
+  supercharged: ^1.11.1
   getwidget: ^1.2.2
   graphql_flutter: ^3.1.0
   http: ^0.12.2
@@ -25,7 +25,7 @@ dependencies:
   flutter_secure_storage: ^3.3.5
   simple_logger: ^1.7.0
   fluttericon: ^1.0.7
-  like_button: ^1.0.3
+  like_button: ^1.0.4
   cached_network_image: ^2.3.3
   extended_text: ^4.0.0
   simple_animations: ^2.2.3

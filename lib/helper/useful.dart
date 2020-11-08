@@ -104,7 +104,12 @@ class _LoadingAlertDialogState extends State<LoadingAlertDialog> {
 }
 
 class EasyDialog {
-  static void toast(String message) => infoToast(message);
+  static void toast(String message) {
+    try {
+      infoToast(message);
+      // ignore: empty_catches
+    } on StateError {}
+  }
 
   static Future dialog(BuildContext context, {@required Widget title, @required Widget content}) => showDialog(
       context: context, builder: (BuildContext context) => LoadingAlertDialog(title, content, disableActions: true));
