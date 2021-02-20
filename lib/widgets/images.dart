@@ -10,8 +10,8 @@ class CachedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    logger.info('with host by $urlPath');
     final headers = withHostHeader(urlPath);
+    // logger.info('cache image $urlPath with headers $headers');
     return CachedNetworkImage(
         key: ValueKey(urlPath),
         httpHeaders: headers,
@@ -19,7 +19,10 @@ class CachedImage extends StatelessWidget {
         filterQuality: FilterQuality.high,
         imageUrl: AppContext.connection.resolveUrl(urlPath),
         placeholder: (context, url) => Container(
-            child: Center(child: Stack(fit: StackFit.loose, children: <Widget>[const CircularProgressIndicator()]))),
+            child: Center(
+                child: Stack(
+                    fit: StackFit.loose,
+                    children: <Widget>[const CircularProgressIndicator()]))),
         errorWidget: (context, url, error) {
           logger.finer('load image error: $error headers:$headers');
           return const Icon(Icons.error);
@@ -27,7 +30,8 @@ class CachedImage extends StatelessWidget {
   }
 }
 
-CachedNetworkImageProvider cachedNetworkImageProvider(String path) => CachedNetworkImageProvider(
+CachedNetworkImageProvider cachedNetworkImageProvider(String path) =>
+    CachedNetworkImageProvider(
       AppContext.connection.resolveAssets(path),
       headers: withHostHeader(path),
     );
