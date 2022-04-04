@@ -16,10 +16,10 @@ AnimatedOpacity fadeIn(Widget child) {
 }
 */
 
-Widget fadeIn({@required Widget child}) => PlayAnimation<double>(
+Widget fadeIn({required Widget child}) => PlayAnimation<double>(
     key: GlobalKey(),
     tween: (0.0).tweenTo(1.0),
-    child: child,
     curve: Curves.easeInOut,
     builder: (context, child, value) => Opacity(opacity: value, child: child),
-    duration: 0.3.seconds);
+    duration: 0.3.seconds,
+    child: child);

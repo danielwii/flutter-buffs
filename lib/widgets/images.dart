@@ -10,21 +10,23 @@ class CachedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final headers = withHostHeader(urlPath);
+    final url = AppContext.connection.resolveUrl(urlPath);
+    // final headers = withHostHeader(urlPath);
     // logger.info('cache image $urlPath with headers $headers');
     return CachedNetworkImage(
         key: ValueKey(urlPath),
-        httpHeaders: headers,
+        // httpHeaders: headers,
         fit: fit,
         filterQuality: FilterQuality.high,
-        imageUrl: AppContext.connection.resolveUrl(urlPath),
+        imageUrl: url,
         placeholder: (context, url) => Container(
             child: Center(
                 child: Stack(
                     fit: StackFit.loose,
                     children: <Widget>[const CircularProgressIndicator()]))),
         errorWidget: (context, url, error) {
-          logger.finer('load image error: $error headers:$headers');
+          logger.finer('load image error: $error url: $url');
+          // logger.finer('load image error: $error headers:$headers');
           return const Icon(Icons.error);
         });
   }

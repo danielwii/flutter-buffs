@@ -1,24 +1,24 @@
 import 'dart:io';
 
-import 'package:commons/commons.dart' hide Response;
+// import 'package:commons/commons.dart' hide Response;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_buffs/flutter_buffs.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-
-import 'helper.dart';
-import 'logger.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:quiver/strings.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final _cacheManager = DefaultCacheManager();
 
-Future<File> cacheFile(String path) async {
-  if (path?.trim()?.isNotEmpty == true) {
+Future<File?> cacheFile(String path) async {
+  if (path.trim().isNotEmpty == true) {
     final url = AppContext.connection.resolveUrl(path);
     final fileFromCache = await _cacheManager.getFileFromCache(url);
     if (fileFromCache == null) logger.info('cache url $url');
     return _cacheManager.getSingleFile(url);
   }
-  return Future.value(null);
+  return Future.value();
 }
 
 Future<void> launchIfPossible(String url) async {
@@ -27,14 +27,17 @@ Future<void> launchIfPossible(String url) async {
 
 class IgnoreBadCertificateHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext context) {
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
-void dioOnHttpClientCreate(HttpClient client) {
-  client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+HttpClient? dioOnHttpClientCreate(HttpClient client) {
+  client.badCertificateCallback =
+      (X509Certificate cert, String host, int port) => true;
+  return client;
 //  if (isDebugMode())
 //    client.findProxy = (uri) {
 //      //proxy all request to localhost:8888
@@ -42,15 +45,15 @@ void dioOnHttpClientCreate(HttpClient client) {
 //    };
 }
 
-Map<String, String> withHostHeader(String url) {
-  final isNull = url?.isNotEmpty != true;
+Map<String, String> withHostHeader(String? url) {
+  final isNull = isBlank(url);
   final httpStart = url?.startsWith('http') == true;
 //  logger.info('url is $url contains ${ServerConnection.getResolvedIp()}');
   final ipIncluded = isNull || AppContext.connection.getResolvedIp() == null
       ? false
-      : url.contains(AppContext.connection.getResolvedIp());
+      : url?.contains(AppContext.connection.getResolvedIp() ?? '') ?? false;
   final needHost = isNull || httpStart || !ipIncluded;
-  return (needHost || AppContext.env.hostname == null) ? {} : {HttpHeaders.hostHeader: AppContext.env.hostname};
+  return needHost ? {HttpHeaders.hostHeader: AppContext.env.hostname} : {};
 }
 
 dynamic fromResponse(Response response, callback) {
@@ -66,12 +69,13 @@ dynamic fromResponse(Response response, callback) {
 
 class LoadingAlertDialog extends StatefulWidget {
   final Widget title;
-  final Widget content;
+  final Widget? content;
 
   final VoidCallback onConfirmed;
-  final bool disableActions;
+  final bool? disableActions;
 
-  LoadingAlertDialog(this.title, this.content, {this.onConfirmed, this.disableActions});
+  LoadingAlertDialog(this.title, this.content,
+      {required this.onConfirmed, this.disableActions});
 
   @override
   State<StatefulWidget> createState() => _LoadingAlertDialogState();
@@ -83,59 +87,79 @@ class _LoadingAlertDialogState extends State<LoadingAlertDialog> {
   @override
   Widget build(BuildContext context) => isLoading
       ? Container(
-          child: Center(child: Card(child: Padding(padding: const EdgeInsets.all(8.0), child: LoadingIndicator()))))
+          child: Center(
+              child: Card(
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: LoadingIndicator()))))
       : AlertDialog(
           title: widget.title,
           content: widget.content,
           actions: widget.disableActions == true
               ? null
               : <Widget>[
-                  FlatButton(
+                  TextButton(
                       child: Text('确定'),
                       onPressed: () => Future.sync(() async {
                             setState(() => isLoading = true);
-                            await widget.onConfirmed();
+                            widget.onConfirmed();
                             Navigator.pop(context);
                           }).whenComplete(() {
                             if (mounted) setState(() => isLoading = false);
                           })),
-                  FlatButton(child: Text('取消'), onPressed: () => Navigator.pop(context)),
+                  TextButton(
+                      child: Text('取消'),
+                      onPressed: () => Navigator.pop(context)),
                 ]);
 }
 
 class EasyDialog {
   static void toast(String message) {
     try {
-      infoToast(message);
+      // infoToast(message);
+      Fluttertoast.showToast(msg: message);
       // ignore: empty_catches
     } on StateError {}
   }
 
-  static Future dialog(BuildContext context, {@required Widget title, @required Widget content}) => showDialog(
-      context: context, builder: (BuildContext context) => LoadingAlertDialog(title, content, disableActions: true));
-
-  static Future confirm(BuildContext context,
-          {@required Widget title, Widget content, @required Function onConfirmed}) =>
+/*
+  static Future dialog(BuildContext context,
+          {required Widget title, required Widget content}) =>
       showDialog(
           context: context,
-          builder: (BuildContext context) => LoadingAlertDialog(title, content, onConfirmed: onConfirmed));
+          builder: (BuildContext context) =>
+              LoadingAlertDialog(title, content, disableActions: true));
+*/
+
+  static Future confirm(BuildContext context,
+          {required Widget title,
+          Widget? content,
+          required VoidCallback onConfirmed}) =>
+      showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              LoadingAlertDialog(title, content, onConfirmed: onConfirmed));
 }
 
 class EnumHelper {
-  static String toName(item) {
+  static String? toName(item) {
     if (item == null) return null;
 
     return item.toString().split('.')[1];
   }
 
-  static T fromString<T>(List<T> enumValues, String value) {
-    if (value == null || enumValues?.isNotEmpty == true) return null;
+  static T? fromString<T>(List<T> enumValues, String value) {
+    if (enumValues.isNotEmpty == true) return null;
 
-    return enumValues.singleWhere((enumItem) => toName(enumItem) == value, orElse: () => null);
+    return enumValues.singleWhere(
+      (enumItem) => toName(enumItem) == value,
+      // orElse: () => null,
+    );
   }
 }
 
-String enumName(item) => EnumHelper.toName(item);
+String? enumName(item) => EnumHelper.toName(item);
 
-dynamic withP<E>(E element, Function(E element) builder, {Function() orElse}) =>
+dynamic withP<E>(E element, Function(E element) builder,
+        {Function()? orElse}) =>
     element == null ? (orElse != null ? orElse() : null) : builder(element);

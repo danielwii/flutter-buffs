@@ -7,27 +7,35 @@ class MySpecialTextSpanBuilder extends SpecialTextSpanBuilder {
 
   /// whether show background for @somebody
   final bool showAtBackground;
+
   @override
-  TextSpan build(String data, {TextStyle textStyle, SpecialTextGestureTapCallback onTap}) {
+  TextSpan build(String data,
+      {TextStyle? textStyle, SpecialTextGestureTapCallback? onTap}) {
     return super.build(data, textStyle: textStyle, onTap: onTap);
   }
 
   @override
-  SpecialText createSpecialText(String flag, {TextStyle textStyle, SpecialTextGestureTapCallback onTap, int index}) {
-    if (flag == null || flag == '') {
+  SpecialText? createSpecialText(
+    String flag, {
+    TextStyle? textStyle,
+    SpecialTextGestureTapCallback? onTap,
+    required int index,
+  }) {
+    if (flag.isEmpty) {
       return null;
     }
 
     ///index is end index of start flag, so text start index should be index-(flag.length-1)
     if (isStart(flag, AtText.flag)) {
       return AtText(
-        textStyle,
-        onTap,
+        textStyle: textStyle,
+        onTap: onTap,
         start: index - (AtText.flag.length - 1),
         showAtBackground: showAtBackground,
       );
     } else if (isStart(flag, EmojiText.flag)) {
-      return EmojiText(textStyle, start: index - (EmojiText.flag.length - 1));
+      return EmojiText(
+          textStyle: textStyle, start: index - (EmojiText.flag.length - 1));
       /*} else if (isStart(flag, DollarText.flag)) {
       return DollarText(textStyle, onTap,
           start: index - (DollarText.flag.length - 1));*/
@@ -43,12 +51,17 @@ class AtText extends SpecialText {
   /// whether show background for @somebody
   final bool showAtBackground;
 
-  AtText(TextStyle textStyle, SpecialTextGestureTapCallback onTap, {this.showAtBackground = false, this.start})
+  AtText(
+      {TextStyle? textStyle,
+      SpecialTextGestureTapCallback? onTap,
+      this.showAtBackground = false,
+      this.start = 0})
       : super(flag, ' ', textStyle);
 
   @override
   InlineSpan finishText() {
-    final textStyle = this.textStyle?.copyWith(color: Colors.blue, fontSize: 16.0);
+    final textStyle =
+        this.textStyle?.copyWith(color: Colors.blue, fontSize: 16.0);
     final atText = toString();
 
     return showAtBackground
@@ -63,7 +76,7 @@ class AtText extends SpecialText {
             style: textStyle,
             recognizer: (TapGestureRecognizer()
               ..onTap = () {
-                if (onTap != null) onTap(atText);
+                if (onTap != null) onTap!(atText);
               }))
         : SpecialTextSpan(
             text: atText,
@@ -72,15 +85,19 @@ class AtText extends SpecialText {
             style: textStyle,
             recognizer: (TapGestureRecognizer()
               ..onTap = () {
-                if (onTap != null) onTap(atText);
+                if (onTap != null) onTap!(atText);
               }));
   }
 }
 
 class EmojiText extends SpecialText {
-  EmojiText(TextStyle textStyle, {this.start}) : super(EmojiText.flag, ']', textStyle);
+  EmojiText({TextStyle? textStyle, this.start = 0})
+      : super(EmojiText.flag, ']', textStyle);
+
   static const String flag = '[';
+
   final int start;
+
   @override
   InlineSpan finishText() {
     final key = toString();
@@ -91,7 +108,8 @@ class EmojiText extends SpecialText {
 
     ///fontSize 26 and text height =30.0
     //final double fontSize = 26.0;
-    return ImageSpan(AssetImage('assets/${key.substring(1, key.length - 1)}.png'),
+    return ImageSpan(
+        AssetImage('assets/${key.substring(1, key.length - 1)}.png'),
         actualText: key,
         imageWidth: size,
         imageHeight: size,
