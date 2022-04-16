@@ -20,6 +20,7 @@ class CachedImage extends StatelessWidget {
         filterQuality: FilterQuality.high,
         imageUrl: url,
         placeholder: (context, url) => Container(
+            margin: EdgeInsets.all(10),
             child: Center(
                 child: Stack(
                     fit: StackFit.loose,

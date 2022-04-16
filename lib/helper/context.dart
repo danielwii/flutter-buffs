@@ -25,19 +25,19 @@ class AppEnv {
     String? PROTECTED_PROTOCOL,
     String? PROTECTED_IP,
     int? PROTECTED_PORT,
-  })  : APP_KEY = bool.hasEnvironment('APP_KEY')
+  })  : APP_KEY = const bool.hasEnvironment('APP_KEY')
             ? String.fromEnvironment('APP_KEY')
             : APP_KEY,
-        HOSTNAME = bool.hasEnvironment('HOSTNAME')
+        HOSTNAME = const bool.hasEnvironment('HOSTNAME')
             ? String.fromEnvironment('HOSTNAME')
             : HOSTNAME,
-        PROTECTED_PROTOCOL = bool.hasEnvironment('PROTECTED_PROTOCOL')
+        PROTECTED_PROTOCOL = const bool.hasEnvironment('PROTECTED_PROTOCOL')
             ? String.fromEnvironment('PROTECTED_PROTOCOL')
             : PROTECTED_PROTOCOL,
-        PROTECTED_IP = bool.hasEnvironment('PROTECTED_IP')
+        PROTECTED_IP = const bool.hasEnvironment('PROTECTED_IP')
             ? String.fromEnvironment('PROTECTED_IP')
             : PROTECTED_IP,
-        PROTECTED_PORT = bool.hasEnvironment('PROTECTED_PORT')
+        PROTECTED_PORT = const bool.hasEnvironment('PROTECTED_PORT')
             ? int.fromEnvironment('PROTECTED_PORT')
             : PROTECTED_PORT;
 
