@@ -1,7 +1,6 @@
-import 'package:flutter/foundation.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'dart:async';
 
-import 'helper.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'context.g.dart';
 
@@ -63,21 +62,14 @@ abstract class AbstractServerConnection {
 class AppContext {
   static late AppEnv env;
   static late AbstractServerConnection connection;
-  static List<VoidCallback> registers = [];
 
-  static void addRegister(VoidCallback register) {
-    registers.add(register);
-  }
-
-  static Future<void> init(
-      {required AppEnv env,
-      required AbstractServerConnection connection}) async {
+  static Future<void> init({
+    required AppEnv env,
+    required AbstractServerConnection connection,
+    required Function fn,
+  }) async {
     AppContext.env = env;
     AppContext.connection = connection;
-//    final graphqlUrl = connection.resolveUrl('/graphql');
-    logger.info('init with registers: $registers ...');
-
-//    await GraphQL.instance.init(graphqlUrl);
-    registers.forEach((register) => register());
+    await fn();
   }
 }

@@ -8,3 +8,5 @@ bool isDebugMode() {
   }());
   return debugMode;
 }
+
+bool isProductionMode = !isDebugMode();

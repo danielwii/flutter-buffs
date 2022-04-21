@@ -13,6 +13,7 @@ class CachedImage extends StatelessWidget {
     final url = AppContext.connection.resolveUrl(urlPath);
     // final headers = withHostHeader(urlPath);
     // logger.info('cache image $urlPath with headers $headers');
+    logger.finest('url is $url');
     return CachedNetworkImage(
         key: ValueKey(urlPath),
         // httpHeaders: headers,
