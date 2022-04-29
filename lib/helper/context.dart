@@ -59,17 +59,22 @@ abstract class AbstractServerConnection {
   String resolveAssets(String url);
 }
 
+typedef InitAfterSplash = Future Function();
+
 class AppContext {
   static late AppEnv env;
   static late AbstractServerConnection connection;
+  static late InitAfterSplash initAfterSplash;
 
   static Future<void> init({
     required AppEnv env,
     required AbstractServerConnection connection,
-    required Function fn,
+    required Function preConfigure,
+    required InitAfterSplash afterSplash,
   }) async {
     AppContext.env = env;
     AppContext.connection = connection;
-    await fn();
+    initAfterSplash = afterSplash;
+    await preConfigure();
   }
 }
