@@ -1,13 +1,11 @@
 import 'dart:io';
 
-// import 'package:commons/commons.dart' hide Response;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_buffs/flutter_buffs.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quiver/strings.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 final _cacheManager = DefaultCacheManager();
 
@@ -19,10 +17,6 @@ Future<File?> cacheFile(String path) async {
     return _cacheManager.getSingleFile(url);
   }
   return Future.value();
-}
-
-Future<void> launchIfPossible(String url) async {
-  if (await canLaunch(url)) await launch(url);
 }
 
 class IgnoreBadCertificateHttpOverrides extends HttpOverrides {
@@ -163,3 +157,15 @@ String? enumName(item) => EnumHelper.toName(item);
 dynamic withP<E>(E element, Function(E element) builder,
         {Function()? orElse}) =>
     element == null ? (orElse != null ? orElse() : null) : builder(element);
+
+class HexColor extends Color {
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF' + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+}
