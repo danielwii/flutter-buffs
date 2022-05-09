@@ -110,8 +110,14 @@ class _LoadingAlertDialogState extends State<LoadingAlertDialog> {
 class EasyDialog {
   static void toast(String message) {
     try {
-      // infoToast(message);
       Fluttertoast.showToast(msg: message);
+      // ignore: empty_catches
+    } on StateError {}
+  }
+
+  static void error(String message) {
+    try {
+      Fluttertoast.showToast(msg: message, backgroundColor: Colors.red);
       // ignore: empty_catches
     } on StateError {}
   }
