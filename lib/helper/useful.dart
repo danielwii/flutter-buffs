@@ -65,7 +65,7 @@ class LoadingAlertDialog extends StatefulWidget {
   final Widget title;
   final Widget? content;
 
-  final VoidCallback onConfirmed;
+  final Function? onConfirmed;
   final bool? disableActions;
 
   LoadingAlertDialog(this.title, this.content,
@@ -93,17 +93,19 @@ class _LoadingAlertDialogState extends State<LoadingAlertDialog> {
               ? null
               : <Widget>[
                   TextButton(
+                      child: Text('取消'),
+                      onPressed: () => Navigator.pop(context, false)),
+                  ElevatedButton(
                       child: Text('确定'),
                       onPressed: () => Future.sync(() async {
                             setState(() => isLoading = true);
-                            widget.onConfirmed();
-                            Navigator.pop(context);
+                            if (widget.onConfirmed != null) {
+                              widget.onConfirmed!();
+                            }
+                            Navigator.pop(context, true);
                           }).whenComplete(() {
                             if (mounted) setState(() => isLoading = false);
                           })),
-                  TextButton(
-                      child: Text('取消'),
-                      onPressed: () => Navigator.pop(context)),
                 ]);
 }
 
@@ -131,10 +133,8 @@ class EasyDialog {
               LoadingAlertDialog(title, content, disableActions: true));
 */
 
-  static Future confirm(BuildContext context,
-          {required Widget title,
-          Widget? content,
-          required VoidCallback onConfirmed}) =>
+  static Future<bool?> confirm(BuildContext context,
+          {required Widget title, Widget? content, Function? onConfirmed}) =>
       showDialog(
           context: context,
           builder: (BuildContext context) =>
