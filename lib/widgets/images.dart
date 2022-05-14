@@ -9,8 +9,10 @@ class CachedImage extends StatelessWidget {
   final String urlPath;
   final BoxFit fit;
   final String? hash;
+  final bool progress;
 
-  CachedImage(this.urlPath, {this.fit = BoxFit.fill, this.hash});
+  CachedImage(this.urlPath,
+      {this.fit = BoxFit.fill, this.hash, this.progress = true});
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +26,21 @@ class CachedImage extends StatelessWidget {
         fit: fit,
         filterQuality: FilterQuality.high,
         imageUrl: url,
-        placeholder: (context, url) => isNotBlank(hash)
-            ? SizedBox.shrink(child: BlurHash(hash: hash!))
-            : Container(
-                margin: EdgeInsets.all(10),
-                child: Center(
-                    child: Stack(fit: StackFit.loose, children: <Widget>[
-                  SpinKitFadingCircle(color: Colors.white)
-                ]))),
+        progressIndicatorBuilder: progress
+            ? (context, url, downloadProgress) => Center(
+                child:
+                    CircularProgressIndicator(value: downloadProgress.progress))
+            : null,
+        placeholder: !progress
+            ? (context, url) => isNotBlank(hash)
+                ? SizedBox.shrink(child: BlurHash(hash: hash!))
+                : Container(
+                    margin: EdgeInsets.all(10),
+                    child: Center(
+                        child: Stack(fit: StackFit.loose, children: <Widget>[
+                      SpinKitFadingCircle(color: Colors.white)
+                    ])))
+            : null,
         errorWidget: (context, url, error) {
           logger.finer('load image error: $error url: $url');
           // logger.finer('load image error: $error headers:$headers');
