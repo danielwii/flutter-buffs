@@ -32,11 +32,12 @@ HttpClient? dioOnHttpClientCreate(HttpClient client) {
   client.badCertificateCallback =
       (X509Certificate cert, String host, int port) => true;
   return client;
-//  if (isDebugMode())
-//    client.findProxy = (uri) {
-//      //proxy all request to localhost:8888
-//      return "PROXY 10.0.2.2:9091";
-//    };
+  /*
+  if (kDebugMode)
+    client.findProxy = (uri) {
+      //proxy all request to localhost:8888
+      return "PROXY 10.0.2.2:9091";
+    };*/
 }
 
 Map<String, String> withHostHeader(String? url) {
@@ -109,36 +110,69 @@ class _LoadingAlertDialogState extends State<LoadingAlertDialog> {
                 ]);
 }
 
-class EasyDialog {
-  static void toast(String message) {
-    try {
-      Fluttertoast.showToast(msg: message);
-      // ignore: empty_catches
-    } on StateError {}
-  }
-
-  static void error(String message) {
-    try {
-      Fluttertoast.showToast(msg: message, backgroundColor: Colors.red);
-      // ignore: empty_catches
-    } on StateError {}
-  }
-
-/*
-  static Future dialog(BuildContext context,
-          {required Widget title, required Widget content}) =>
-      showDialog(
-          context: context,
-          builder: (BuildContext context) =>
-              LoadingAlertDialog(title, content, disableActions: true));
-*/
-
+class AsunaDialog {
   static Future<bool?> confirm(BuildContext context,
           {required Widget title, Widget? content, Function? onConfirmed}) =>
       showDialog(
           context: context,
           builder: (BuildContext context) =>
               LoadingAlertDialog(title, content, onConfirmed: onConfirmed));
+
+  static void message(String message,
+      {GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey,
+      BuildContext? context,
+      Duration? duration,
+      SnackBarBehavior snackBarBehavior = SnackBarBehavior.fixed}) {
+    duration ??= const Duration(seconds: 3);
+
+    final snackBar = SnackBar(
+      duration: duration,
+      content: Text(
+        message,
+        style: TextStyle(color: Colors.pink),
+      ),
+      // backgroundColor: theme.colorScheme.primary,
+      behavior: snackBarBehavior,
+    );
+
+    if (scaffoldMessengerKey != null) {
+      scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
+    } else if (context != null) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      Fluttertoast.showToast(msg: message);
+      try {
+        // ignore: empty_catches
+      } on StateError {}
+    }
+  }
+
+  static void error(String message,
+      {GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey,
+      BuildContext? context,
+      Duration? duration,
+      SnackBarBehavior snackBarBehavior = SnackBarBehavior.fixed}) {
+    duration ??= const Duration(seconds: 3);
+
+    final snackBar = SnackBar(
+      duration: duration,
+      content: Text(message, style: TextStyle(color: Colors.white)),
+      backgroundColor: Colors.white10,
+      behavior: snackBarBehavior,
+    );
+
+    if (scaffoldMessengerKey != null) {
+      scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
+    } else if (context != null) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      Fluttertoast.showToast(
+          msg: message, timeInSecForIosWeb: duration.inSeconds);
+      try {
+        // ignore: empty_catches
+      } on StateError {}
+    }
+  }
 }
 
 class EnumHelper {
