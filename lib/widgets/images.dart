@@ -44,7 +44,7 @@ class CachedImage extends StatelessWidget {
         errorWidget: (context, url, error) {
           logger.finer('load image error: $error url: $url');
           // logger.finer('load image error: $error headers:$headers');
-          return const Icon(Icons.error);
+          return const Icon(Icons.image_not_supported);
         });
   }
 }
