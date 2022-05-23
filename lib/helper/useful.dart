@@ -194,8 +194,7 @@ class EnumHelper {
 
 String? enumName(item) => EnumHelper.toName(item);
 
-dynamic withP<E>(E element, Function(E element) builder,
-        {Function()? orElse}) =>
+R withP<R, E>(E element, R Function(E element) builder, {Function()? orElse}) =>
     element == null ? (orElse != null ? orElse() : null) : builder(element);
 
 class HexColor extends Color {
