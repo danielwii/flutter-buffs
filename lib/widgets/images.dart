@@ -10,9 +10,11 @@ class CachedImage extends StatelessWidget {
   final BoxFit fit;
   final String? hash;
   final bool progress;
+  final double? width;
+  final double? height;
 
   CachedImage(this.urlPath,
-      {this.fit = BoxFit.fill, this.hash, this.progress = true});
+      {this.fit = BoxFit.fill, this.hash, this.progress = true, this.width, this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +26,14 @@ class CachedImage extends StatelessWidget {
         key: ValueKey(urlPath),
         // httpHeaders: headers,
         fit: fit,
+        width: width,
+        height: height,
         filterQuality: FilterQuality.high,
         imageUrl: url,
         progressIndicatorBuilder: progress
             ? (context, url, downloadProgress) => Center(
                 child:
-                    CircularProgressIndicator(value: downloadProgress.progress))
+                    CircularProgressIndicator(value: downloadProgress.progress, color: Colors.white))
             : null,
         placeholder: !progress
             ? (context, url) => isNotBlank(hash)
