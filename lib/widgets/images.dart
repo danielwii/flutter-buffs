@@ -12,27 +12,32 @@ class CachedImage extends StatelessWidget {
   final bool progress;
   final double? width;
   final double? height;
+  final int? memCacheWidth;
 
-  CachedImage(this.urlPath,
-      {this.fit = BoxFit.fill,
-      this.hash,
-      this.progress = true,
-      this.width,
-      this.height});
+  CachedImage(
+    this.urlPath, {
+    this.fit = BoxFit.fill,
+    this.hash,
+    this.progress = true,
+    this.width,
+    this.height,
+    this.memCacheWidth,
+  });
 
   @override
   Widget build(BuildContext context) {
     final url = AppContext.connection.resolveUrl(urlPath);
 
     final size = MediaQuery.of(context).size;
-    final memCacheWidth = width?.toInt() ?? size.width.toInt();
+    final memCacheWidthValue = width?.toInt() ?? size.width.toInt();
     return CachedNetworkImage(
       key: ValueKey(url),
       fit: fit,
       width: width,
       height: height,
       maxWidthDiskCache: size.width.toInt(),
-      memCacheWidth: memCacheWidth < 100 ? 100 : memCacheWidth,
+      memCacheWidth: memCacheWidth ??
+          (memCacheWidthValue < 100 ? 100 : memCacheWidthValue),
       imageUrl: url,
       progressIndicatorBuilder: progress
           ? (context, url, downloadProgress) => Center(
