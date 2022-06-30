@@ -14,47 +14,53 @@ class CachedImage extends StatelessWidget {
   final double? height;
 
   CachedImage(this.urlPath,
-      {this.fit = BoxFit.fill, this.hash, this.progress = true, this.width, this.height});
+      {this.fit = BoxFit.fill,
+      this.hash,
+      this.progress = true,
+      this.width,
+      this.height});
 
   @override
   Widget build(BuildContext context) {
     final url = AppContext.connection.resolveUrl(urlPath);
-    // final headers = withHostHeader(urlPath);
-    // logger.info('cache image $urlPath with headers $headers');
-    logger.finest('url is $url');
+
+    final size = MediaQuery.of(context).size;
+    final memCacheWidth = width?.toInt() ?? size.width.toInt();
     return CachedNetworkImage(
-        key: ValueKey(urlPath),
-        // httpHeaders: headers,
-        fit: fit,
-        width: width,
-        height: height,
-        filterQuality: FilterQuality.high,
-        imageUrl: url,
-        progressIndicatorBuilder: progress
-            ? (context, url, downloadProgress) => Center(
-                child:
-                    CircularProgressIndicator(value: downloadProgress.progress, color: Colors.white))
-            : null,
-        placeholder: !progress
-            ? (context, url) => isNotBlank(hash)
-                ? SizedBox.shrink(child: BlurHash(hash: hash!))
-                : Container(
-                    margin: EdgeInsets.all(10),
-                    child: Center(
-                        child: Stack(fit: StackFit.loose, children: <Widget>[
-                      SpinKitFadingCircle(color: Colors.white)
-                    ])))
-            : null,
-        errorWidget: (context, url, error) {
-          logger.finer('load image error: $error url: $url');
-          // logger.finer('load image error: $error headers:$headers');
-          return const Icon(Icons.image_not_supported);
-        });
+      key: ValueKey(url),
+      fit: fit,
+      width: width,
+      height: height,
+      maxWidthDiskCache: size.width.toInt(),
+      memCacheWidth: memCacheWidth < 100 ? 100 : memCacheWidth,
+      imageUrl: url,
+      progressIndicatorBuilder: progress
+          ? (context, url, downloadProgress) => Center(
+                child: CircularProgressIndicator(
+                  value: downloadProgress.progress,
+                  color: Colors.white,
+                ),
+              )
+          : null,
+      placeholder: !progress
+          ? (context, url) => isNotBlank(hash)
+              ? SizedBox.shrink(child: BlurHash(hash: hash!))
+              : Container(
+                  margin: EdgeInsets.all(10),
+                  child: Center(
+                      child: Stack(fit: StackFit.loose, children: <Widget>[
+                    SpinKitFadingCircle(color: Colors.white)
+                  ])))
+          : null,
+      errorWidget: (context, url, error) {
+        logger.warning('load image error: $error url: $url');
+        return const Icon(Icons.image_not_supported);
+      },
+    );
   }
 }
 
-CachedNetworkImageProvider cachedNetworkImageProvider(String path) =>
-    CachedNetworkImageProvider(
-      AppContext.connection.resolveAssets(path),
-      headers: withHostHeader(path),
-    );
+CachedNetworkImageProvider cachedNetworkImageProvider(String path) {
+  final url = AppContext.connection.resolveAssets(path);
+  return CachedNetworkImageProvider(url);
+}
