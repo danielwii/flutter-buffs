@@ -62,7 +62,7 @@ abstract class AbstractServerConnection {
 typedef InitAfterSplash = Future Function();
 
 class AppContext {
-  static late bool isPad;
+  static bool isPad = false;
   static late AppEnv env;
   static late AbstractServerConnection connection;
   static late InitAfterSplash initAfterSplash;
