@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:json_annotation/json_annotation.dart';
 
+import 'logger.dart';
+
 part 'context.g.dart';
 
 @JsonSerializable()
@@ -54,7 +56,7 @@ class AppEnv {
 
 abstract class AbstractServerConnection {
   String resolveUrl(String path,
-      {String ip, String protectedIp, String protocol, int port});
+      {String? ip, String? protectedIp, String? protocol, int? port});
   String? getResolvedIp();
   String resolveAssets(String url);
 }
@@ -75,7 +77,10 @@ class AppContext {
   }) async {
     AppContext.env = env;
     AppContext.connection = connection;
-    initAfterSplash = afterSplash;
+    initAfterSplash = () {
+      logger.info('init after splash...');
+      return afterSplash();
+    };
     await preConfigure();
   }
 }
